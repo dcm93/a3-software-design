@@ -48,6 +48,7 @@ var DonutChart = function() {
 				.attr('height', height)
 				.attr('transform', 'translate(' + (width / 2) + ',' + height / 2 + ')');
 
+
 			svgEnter.append('g')
 				.attr('transform', 'translate(' + (width  / 2) + ',' + height/2 + ')')
 				.attr('class', 'chartG');
@@ -58,8 +59,9 @@ var DonutChart = function() {
 
 			// Draw donut chart
 			var path = element.select('.chartG').selectAll('path')
-				.data(pie(data[0]))
-				.enter().append('path')
+				.data(pie(data[0]));
+				
+				path.enter().append('path')
 				.attr('fill', function(d) { return color(d.data.key); })
 				.transition()
 				.delay(function(d,i) { return i * 800; })
@@ -72,13 +74,18 @@ var DonutChart = function() {
 					}
 				});
 
+			path.exit().remove();
+
 			// Add text labels
 			var label = element.select('.sliceLabel').selectAll('text')
-				.data(pie(data[0])).enter()
+				.data(pie(data[0]));
+
+				label.enter()
 				.append('text')
 				//.attr('transform', function(d) {return 'translate(' + arc.centroid(d) + ')'; })
 				.transition()
 				.delay(function(d,i) { return i * 800; })
+				.duration(800)
 				.attr('transform', labelTransform)
 				.attr('dy', '.35em')
 				//.text(function(d) { return d.data.key; })
@@ -87,6 +94,7 @@ var DonutChart = function() {
 				.style('text-anchor', function(d) {
 					return (midAngle(d)) < Math.PI ? 'start' : 'end';
 				});
+			label.exit().remove();
 
 			// For positioning text labels
 			function labelTransform(d, i) {
@@ -120,32 +128,32 @@ var DonutChart = function() {
 
 	// Getter and setter functions
 	chart.height = function(value) {
-		if (!argument.length) return height;
+		if (!arguments.length) return height;
 		height = value;
 		return chart;
 	};
 
 	chart.width = function(value) {
-		if (!argument.length) return width;
+		if (!arguments.length) return width;
 		width = value;
 		return chart;
 	};
 
 	chart.radius = function(value) {
-		if (!argument.length) return radius;
+		if (!arguments.length) return radius;
 		radius = value;
 		return chart;
 	};
 
 	chart.color = function(value) {
-		if (!argument.length) return color;
+		if (!arguments.length) return color;
 		color = value;
 		return chart;
 	};
 
 	chart.title = function(value) {
-		if (!argument.length) return title;
-		tile = value;
+		if (!arguments.length) return title;
+		title = value;
 		return chart;
 	};
 
